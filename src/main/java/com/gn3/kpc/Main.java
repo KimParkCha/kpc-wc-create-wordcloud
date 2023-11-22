@@ -23,7 +23,6 @@ import redis.clients.jedis.JedisPool;
 import scala.Tuple2;
 import scala.collection.Seq;
 
-import java.awt.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -122,6 +121,7 @@ public class Main {
 
         List<Tuple2<String, Integer>> result = wcRDD.mapToPair(s -> new Tuple2<>(s, 1)).reduceByKey((i1, i2) -> i1 + i2).collect();
         Jedis jedis = ac.getBean(JedisPool.class).getResource();
+        if(jedis.exists("wordcloud"))jedis.del("wordcloud");
         for (Tuple2<String, Integer> tuple2 : result) {
             byte[] tupleBytes = tuple2._1().getBytes(StandardCharsets.UTF_8);
             String utf8Encode = new String(tupleBytes, StandardCharsets.UTF_8);
