@@ -35,7 +35,6 @@ dependencies {
     implementation group: 'org.apache.clerezza.ext', name: 'org.json.simple', version: '0.4'
     implementation 'com.github.tuguri8:korean-summarizer:0.1.2'
     implementation group: 'redis.clients', name: 'jedis', version: '5.0.2'
-    implementation group: 'com.kennycason', name: 'kumo-core', version: '1.28'
 }
 
 jar{

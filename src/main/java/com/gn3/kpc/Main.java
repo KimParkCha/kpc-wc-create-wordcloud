@@ -4,10 +4,6 @@ import com.gn3.kpc.dto.DTO;
 import com.gn3.kpc.dto.NewsDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.kennycason.kumo.*;
-import com.kennycason.kumo.bg.CircleBackground;
-import com.kennycason.kumo.font.scale.SqrtFontScalar;
-import com.kennycason.kumo.palette.ColorPalette;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -129,9 +125,7 @@ public class Main {
         for (Tuple2<String, Integer> tuple2 : result) {
             byte[] tupleBytes = tuple2._1().getBytes(StandardCharsets.UTF_8);
             String utf8Encode = new String(tupleBytes, StandardCharsets.UTF_8);
-            System.out.println("tuple2._1() = " + tuple2._1());
-            System.out.println("tuple2 = " + tuple2._2());
-            jedis.hset("wordcloud", tuple2._1(), String.valueOf(tuple2._2()));
+            jedis.hset("wordcloud", utf8Encode, String.valueOf(tuple2._2()));
         }
         jedis.close();
     }
