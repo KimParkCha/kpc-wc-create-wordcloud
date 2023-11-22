@@ -107,7 +107,7 @@ public class Main {
             List<String> result = new ArrayList<>();
 
             for (DTO dto : dtos) {
-                String title = ((NewsDTO) dto).getTitle();
+                String title = ((NewsDTO) dto).getContent();
                 CharSequence normalized = OpenKoreanTextProcessorJava.normalize(title);
                 Seq<KoreanTokenizer.KoreanToken> tokens = OpenKoreanTextProcessorJava.tokenize(normalized);
                 List<KoreanPhraseExtractor.KoreanPhrase> phrases = OpenKoreanTextProcessorJava.extractPhrases(tokens, true, true);
