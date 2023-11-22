@@ -121,23 +121,29 @@ public class Main {
             return result.iterator();
         });
 
-        List<WordFrequency> wordFrequencies = new ArrayList<>();
+
         List<Tuple2<String, Integer>> result = wcRDD.mapToPair(s -> new Tuple2<>(s, 1)).reduceByKey((i1, i2) -> i1 + i2).collect();
-        for (Tuple2<String, Integer> tuple2 : result) {
-            byte[] tupleBytes = tuple2._1().getBytes(StandardCharsets.UTF_8);
-            String utf8Encode = new String(tupleBytes, StandardCharsets.UTF_8);
-            WordFrequency wordFrequency = new WordFrequency(utf8Encode, tuple2._2());
-            System.out.println("tuple2._1() = " + tuple2._1());
-            System.out.println("tuple2 = " + tuple2._2());
-            wordFrequencies.add(wordFrequency);
+        for (int i = 10; i < 50; i+=10) {
+            List<WordFrequency> wordFrequencies = new ArrayList<>();
+            int cnt = 0;
+            for (Tuple2<String, Integer> tuple2 : result) {
+                byte[] tupleBytes = tuple2._1().getBytes(StandardCharsets.UTF_8);
+                String utf8Encode = new String(tupleBytes, StandardCharsets.UTF_8);
+                WordFrequency wordFrequency = new WordFrequency(utf8Encode, tuple2._2());
+                System.out.println("tuple2._1() = " + tuple2._1());
+                System.out.println("tuple2 = " + tuple2._2());
+                wordFrequencies.add(wordFrequency);
+                if(cnt++ == i)break;
+            }
+            final Dimension dimension = new Dimension(600, 600);
+            final WordCloud wordCloud = new WordCloud(dimension, CollisionMode.PIXEL_PERFECT);
+            wordCloud.setPadding(2);
+            wordCloud.setBackground(new CircleBackground(300));
+            wordCloud.setColorPalette(new ColorPalette(new Color(0x4055F1), new Color(0x408DF1), new Color(0x40AAF1), new Color(0x40C5F1), new Color(0x40D3F1), new Color(0xFFFFFF)));
+            wordCloud.setFontScalar(new SqrtFontScalar(10, 40));
+            wordCloud.build(wordFrequencies);
+            wordCloud.writeToFile("/home/ubuntu/wordcloud/tmp_" + i + ".png");
         }
-        final Dimension dimension = new Dimension(600, 600);
-        final WordCloud wordCloud = new WordCloud(dimension, CollisionMode.PIXEL_PERFECT);
-        wordCloud.setPadding(2);
-        wordCloud.setBackground(new CircleBackground(300));
-        wordCloud.setColorPalette(new ColorPalette(new Color(0x4055F1), new Color(0x408DF1), new Color(0x40AAF1), new Color(0x40C5F1), new Color(0x40D3F1), new Color(0xFFFFFF)));
-        wordCloud.setFontScalar(new SqrtFontScalar(10, 40));
-        wordCloud.build(wordFrequencies);
-        wordCloud.writeToFile("tmp.png");
+
     }
 }
