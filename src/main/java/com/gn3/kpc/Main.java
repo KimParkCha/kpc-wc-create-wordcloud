@@ -125,7 +125,9 @@ public class Main {
         for (Tuple2<String, Integer> tuple2 : result) {
             byte[] tupleBytes = tuple2._1().getBytes(StandardCharsets.UTF_8);
             String utf8Encode = new String(tupleBytes, StandardCharsets.UTF_8);
-            jedis.hset("wordcloud", utf8Encode, String.valueOf(tuple2._2()));
+            if(tuple2._2() > 1){
+                jedis.hset("wordcloud", utf8Encode, String.valueOf(tuple2._2()));
+            }
         }
         jedis.close();
     }
