@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Properties;
 
 public class Main {
-    private static final CharSequence FIN_MESSAGE = "end";
+    private static final CharSequence FIN_MESSAGE = "end\n";
     private static final Logger log = LoggerFactory.getLogger(Main.class);
     public static void main(String[] args) throws IOException {
         AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AutoConfig.class);
